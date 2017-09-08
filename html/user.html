@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>用户信息</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/csconfig.js"></script>
+    <script type="text/javascript" src="../script/csapi.js"></script>
+    <script type="text/javascript" src="../script/doT.min.js"></script>
+
+</head>
+
+<body>
+
+    <section class="aui-content aui-grid aui-margin-b-15">
+        <div class="aui-row">
+            <div class="aui-col-xs-4 aui-border-r">
+                <big class="aui-text-danger"><span id="logincount">&nbsp;</span><small> 次</small></big>
+                <div class="aui-gird-lable aui-font-size-12">登录次数</div>
+            </div>
+            <div class="aui-col-xs-4 aui-border-r">
+                <big class="aui-text-warning" id="lastlogin">&nbsp;</big>
+                <div class="aui-gird-lable aui-font-size-12">最后登录</div>
+            </div>
+            <div class="aui-col-xs-4">
+                <big class="aui-text-success">正常<small></small></big>
+                <div class="aui-gird-lable aui-font-size-12">状态</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="aui-content">
+        <ul class="aui-list aui-list-in aui-margin-b-15">
+            <li class="aui-list-header">
+                用户信息
+            </li>
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    姓名
+                    <div id="username">姓名</div>
+                </div>
+            </li>
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    单位
+                    <div id="dwname">单位名称</div>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-gear aui-text-warning"></i>
+                </div>
+
+                <div class="aui-list-item-inner aui-list-item-arrow" tapmode onclick="$cs.openCommonWin('userModifyPwd', '修改密码')">
+                    <div class="aui-list-item-title">修改密码</div>
+                </div>
+            </li>
+
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-trash aui-text-warning"></i>
+                </div>
+
+                <div class="aui-list-item-inner aui-list-item-arrow" tapmode onclick="clearData();">
+                    <div class="aui-list-item-title">清理缓存</div>
+                    <div class="aui-list-item-right" id="cachesize">----m</div>
+                </div>
+            </li>
+
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-cert aui-text-warning"></i>
+                </div>
+
+                <div class="aui-list-item-inner aui-list-item-arrow" tapmode onclick="$cs.openCommonWin('about', '关于我们')">
+                    <div class="aui-list-item-title">关于我们</div>
+                    <div class="aui-list-item-right"></div>
+                </div>
+            </li>
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+                    <div class="aui-btn aui-btn-block aui-btn-sm aui-btn-info aui-margin-r-15 aui-margin-l-15" tapmode onclick="loginOut()">退出登录</div>
+                </div>
+            </li>
+
+        </ul>
+        </div>
+
+</body>
+
+<script>
+    function loginOut() {
+        $cs.showProgress('正在注销...');
+
+        var postUrl = $cs.getAppPath() + 'csoft/login!mobilelogout.action';
+        var bodyParam = {
+            deviceId: $cs.getDeviceId(),
+            deviceName: $cs.getDeviceName()
+        }
+
+        $cs.ajaxReq(postUrl, bodyParam, function(ret, err) {
+            $cs.hideProgress();
+
+            $cs.pushUnbind($api.getStorage('csuserinfo'));  // 解绑推送（单户、和全部群组）
+
+
+            $api.rmStorage('csuserinfo');
+            $cs.execScript('root', 'openTab();');
+        }, function(ret, err) {
+            $cs.hideProgress();
+        })
+    }
+
+    //清除下载缓存文件、拍照临时文件、网页缓存文件等
+    function clearData() {
+
+        api.openFrame({
+       	        name: 'query_blank',
+       	        url: 'test.html',
+                bgColor: 'rgba(0,0,0,0.6)',
+       	        rect: {
+       	            x: 0,
+       	            y: 0,
+       	            w: 'auto',
+       	            h: 'auto'
+       	        }
+       	    });
+        /*
+    	if ($cs.getIsApp()){
+	        api.clearCache();
+	        $cs.showMsg('缓存已清空!');
+	        getCacheSize();
+        }
+        */
+    }
+
+    function getCacheSize(){
+        if ($cs.getIsApp()){
+	      api.getCacheSize(function(ret) {
+	          var size = parseInt(ret.size / 1000) + " KB";
+	          $api.text($api.byId("cachesize"), size);
+	      });
+      }
+    }
+
+    function refreshPage(pageParam, paramName) {
+        getCacheSize();
+
+        $cs.loadDbForm('userinfo');
+    }
+
+    apiready = function() {
+        initQueryPage(-1);
+    };
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/csconfig.js"></script>
+    <script type="text/javascript" src="../script/csapi.js"></script>
+    <script type="text/javascript" src="../script/doT.min.js"></script>
+
+</head>
+
+<body>
+    <div class="aui-content aui-margin-t-10">
+
+        <h2 class="aui-margin-t-15 aui-margin-b-15 aui-text-center">用户登录 <small><i class="aui-iconfont aui-icon-cert aui-text-danger"></i></small></h2>
+
+        <ul class="aui-list aui-form-list">
+            <li class="aui-list-header">用户登录 <div class="aui-btn  aui-margin-r-5" tapmode onclick="userreg()">注册</div></li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-mobile"></i>
+                    </div>
+
+                    <div class="aui-list-item-label">
+                        用户名
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" placeholder="请输入用户名" id="username">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-lock"></i>
+                    </div>
+
+                    <div class="aui-list-item-label">
+                        密码
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="password" placeholder="请输入登录密码" id="password">
+                    </div>
+                </div>
+            </li>
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+                    <div class="aui-btn aui-btn-info aui-margin-r-5" tapmode onclick="login()">登录</div>
+                    <div class="aui-btn aui-btn-danger aui-margin-l-5" tapmode onclick="cancel()">取消</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+  <!--
+    <section class="aui-content-padded">
+        <p class="aui-font-size-12 aui-text-center aui-margin-b-15">第三方账号登录</p>
+        <div class="aui-grid" style="background: none;">
+            <div class="aui-row">
+                <div class="aui-col-xs-4" onclick="initWxBind();">
+                    <i class="aui-iconfont aui-icon-qq"></i>
+                </div>
+                <div class="aui-col-xs-4" onclick="alert('ok2')">
+                    <i class="aui-iconfont aui-icon-wechat"></i>
+                </div>
+                <div class="aui-col-xs-4" onclick="alert('ok3')">
+                    <i class="aui-iconfont aui-icon-weibo"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  -->
+</body>
+
+
+<script type="text/javascript">
+
+    function cancel() {
+        $api.byId('username').value = '';
+        $api.byId('password').value = '';
+    }
+
+    function login() {
+        var name = $api.byId('username').value;
+        var pwd = $api.byId('password').value;
+        if ($cs.isNull(name)) {
+            alert('请输入用户名');
+            return;
+        }
+        $cs.showProgress('正在登录...');
+
+        var postUrl = $cs.getAppPath() + 'csoft/login!mobilelogin.action';
+        var bodyParam = {
+            userid: name,
+            pwd: pwd,
+            deviceId: $cs.getDeviceId(),
+            deviceName: $cs.getDeviceName()
+        }
+
+        $cs.ajaxReq(postUrl, bodyParam, function(ret, err) {
+               $cs.hideProgress();
+               if (ret.result == '0') {
+                   $api.setStorage('userid', name); // 上次成功登录的 userid
+                   $api.setStorage('csuserinfo', ret);//
+
+                   $cs.closeWin();
+                   $cs.pushBind(ret);        // 绑定，ret=ui
+
+                   setTimeout(function() {
+                       //$cs.execScript('root', 'openTab(null, true);');
+                       $cs.execScript('root', 'switchframe("first_frame");');
+                   }, 100);
+               } else {
+                   $cs.showMsg(ret.msg);
+               }
+            }),
+            function(ret, err) {
+                $cs.hideProgress();
+            }
+    }
+
+    function userreg(){
+      api.openWin({
+          name: 'userreg',
+          url: './userreg.html',
+
+      });
+
+    }
+    apiready = function() {
+        $cs.parseTapmode();
+
+        var sUserId = $api.getStorage('userid'); // 记录上次登录用户名
+        if (!$cs.isNull(sUserId)) {
+            $api.byId("username").value = sUserId;
+        }
+    }
+
+
+  /*
+    http://www.cnblogs.com/jiqing9006/p/6164960.html
+    function initWxBind() {
+        wx = api.require('wx');
+        wx.isInstalled(function(ret, err) {
+            if (!ret.installed) {
+                alert('当前设备未安装微信客户端');
+            } else {
+                wx.auth(function(ret, err) {
+                    if (ret.status) {
+                        wx.getToken({
+                            code: ret.code
+                        }, function(ret, err) {
+                            if (ret.status) {
+                                api.showProgress({
+                                    style: 'default',
+                                    animationType: 'fade',
+                                    title: '授权成功',
+                                    text: '绑定处理中...',
+                                    modal: true
+                                });
+                                var provideName="wx_" + BASE_APP_TYPE;
+                                //临时存储openId,与accessToken后面绑定账号时用到(绑定用完需要清理掉)
+                                loginParam.provideName=provideName;
+                                loginParam.openId=ret.openId;
+                                loginParam.accessToken=ret.accessToken;
+                                loginParam.refreshToken=ret.dynamicToken;
+                                $api.setStorage('loginParam', loginParam);
+                                //获取wx头像，昵称
+                                wx.getUserInfo({
+                                    accessToken: ret.accessToken,
+                                    openId: ret.openId
+                                }, function(ret, err) {
+                                    if (ret.status) {
+                                        // 绑定成功
+                                        var loginParam=$api.getStorage('loginParam');
+                                        loginParam.nickName=ret.nickname;
+                                        loginParam.avatar=ret.headimgurl;
+                                        $api.setStorage('loginParam', loginParam);
+                                        // 实现绑定动作
+                                        bindAccount(function (res) {
+                                            if (res == true) {
+                                                // 发送页面刷新事件
+                                                var toast = new auiToast();
+                                                toast.success({
+                                                    title: "绑定成功",
+                                                    duration: 2000
+                                                });
+                                                setTimeout("location.reload()", 2000);
+                                            }
+                                        });
+                                        api.hideProgress();
+                                    }
+                                });
+
+                            } else {
+                                alert(JSON.stringify(err))
+                            }
+                        });
+                    } else {
+                        var toast = new auiToast();
+                        toast.fail({
+                            title: "微信授权绑定失败",
+                            duration: 1500
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    function initQQBind() {
+        qq = api.require('qq');
+        qq.login(function(ret, err) {
+            if (ret.status) {
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '授权成功',
+                    text: '绑定处理中...',
+                    modal: true
+                });
+                var provideName="qq_" + BASE_APP_TYPE;
+                loginParam.provideName=provideName;
+                loginParam.openId=ret.openId;
+                loginParam.accessToken=ret.accessToken;
+                $api.setStorage('loginParam', loginParam);
+                //获取qq头像，昵称
+                qq.getUserInfo(function(ret, err) {
+                    if (ret.status) {
+                        // 绑定成功
+                        var loginParam=$api.getStorage('loginParam');
+                        loginParam.nickName=ret.info.nickname;
+                        loginParam.avatar=ret.info.figureurl_qq_2;
+                        $api.setStorage('loginParam', loginParam);
+                        //实现绑定动作
+                        bindAccount(function (res) {
+                            if (res == true) {
+                                // 发送页面刷新事件
+                                var toast = new auiToast();
+                                toast.success({
+                                    title: "绑定成功",
+                                    duration: 2000
+                                });
+                                setTimeout("location.reload()", 2000);
+                            }
+                        });
+                        api.hideProgress();
+
+                    }
+                });
+
+            } else {
+                var toast = new auiToast();
+                toast.fail({
+                    title: "授权失败",
+                    duration: 1500
+                });
+            }
+        });
+    }
+
+
+    function initWbBind() {
+        weibo = api.require('weibo');
+        weibo.auth(function(ret, err) {
+            //alert(JSON.stringify(ret));
+            if (ret.status) {
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '授权成功',
+                    text: '绑定处理中...',
+                    modal: true
+                });
+                var provideName="wb_" + BASE_APP_TYPE;
+                //临时存储openId,与accessToken后面绑定账号时用到(绑定用完需要清理掉)
+                loginParam.provideName=provideName;
+                loginParam.openId=ret.userId;
+                loginParam.accessToken=ret.token;
+                $api.setStorage('loginParam', loginParam);
+                //获取微博头像，昵称
+                weibo.getUserInfo(function(ret,err){
+                    if (ret.status) {
+                        // 绑定成功
+                        var loginParam=$api.getStorage('loginParam');
+                        loginParam.nickName=ret.userInfo.screen_name;
+                        loginParam.avatar=ret.userInfo.avatar_large;
+                        $api.setStorage('loginParam', loginParam);
+                        // 实现绑定动作
+                        bindAccount(function (res) {
+                            if (res == true) {
+                                // 发送页面刷新事件
+                                var toast = new auiToast();
+                                toast.success({
+                                    title: "绑定成功",
+                                    duration: 2000
+                                });
+                                setTimeout("location.reload()", 2000);
+                            }
+                        });
+                        api.hideProgress();
+                    }
+                });
+
+            }else {
+                var toast = new auiToast();
+                toast.fail({
+                    title: "授权失败",
+                    duration: 1500
+                });
+            }
+        });
+    }
+*/
+</script>
+
+</html>

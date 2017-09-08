@@ -1,0 +1,249 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="copyright" content="www.apicloud.com" />
+<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+<title>新闻——body</title>
+<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+<link rel="stylesheet" type="text/css" href="../../css/aui.2.0.css" />
+<link rel="stylesheet" type="text/css" href="../../css/egret.css" />
+<style>
+
+@-webkit-keyframes playing {
+	/*0%   { transform: rotate(0deg);}*/
+	100% { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes playing {
+	100% { transform: rotate(360deg);}
+}
+body {height: 100%;}
+.br {border-right: 1px solid #0A0A0A;}
+.bl {border-right: 1px solid #232323;}
+
+/* 上部效果 */
+.play-up {position: relative;}
+.play-up-bg {width: 100%;height: 100%;position: absolute;}
+.play_needle {position: absolute; vertical-align: top; top: -20px; width: 200px; left: 50%; margin-left: -100px;
+	transform: rotate(-30deg);
+	transform-origin: 50% 10%;
+	transition: all 0.8s ease;
+
+	-webkit-transform: rotate(-30deg);
+	-webkit-transform-origin: 50% 10%;
+	-webkit-transition: all 0.8s ease;}
+
+.playdisc { display: none;width: 80%; left: 50%; margin-left: -40%; top: 30px; }
+
+.play-up-toolbar {position: relative; bottom: 50px; display: -webkit-box; padding: 0 50px; height: 50px; border-top: 1px solid #e0e0e0; -webkit-box-align: center;}
+.play-up-toolbar .play-up-tool {-webkit-box-flex:1;text-align: center;}
+.play-up-toolbar .play-up-tool img {height: 30px;}
+
+/* 底部控制 */
+.play-control {position: absolute;width: 100%;bottom: 0;height: 60px;border-top: 1px solid #e0e0e0;}
+.play-control .loopmode {position: absolute; left: 0; vertical-align: top; line-height: 60px; text-align: center; font-size: 0.8em; color: #444;padding-left: 10px;}
+.play-control .controllist {position: absolute;right: 0;vertical-align: top; line-height: 60px; text-align: center; font-size: 0.8em; color: #444;padding-right: 10px;}
+.play-control .play-control-bar {position: absolute;left:60px; right: 60px;height: 60px;}
+.play-control .play-control-bar img {width: 50px;padding-top: 5px;position: absolute;}
+.play-control .play-control-bar .play-control-bar-bg {height: 40px;margin-top: 10px;background-color: #D6D6D6;border-radius: 20px;width: 100%;}
+
+.fminfo {position: relative; bottom: 0px; width: 100%; text-align: center;}
+.fminfo .fmtitle {font-size: 1.2em;}
+.fminfo .fmsinger {font-size: 0.8em;color: #555;padding-top: 10px;}
+#cont{margin-top:10%;}
+/* 评论 */
+.comment .egret-flex-item-logo img {height: 2em;width: 2em;border-radius: 1em;}
+.comment .egret-flex-item-shelf .egret-flex-item-shelf01 {font-size: 0.8em;}
+.comment .egret-flex-item-shelf .egret-flex-item-shelf02 {font-size: 0.5em;margin-top: 0.1em;}
+.comment .egret-flex-item-arrow {-webkit-box-flex: 1; max-width: 1em; min-width: 1em; margin-right: 15px;}
+.comment .egret-flex-item-arrow img {width: 100%; max-width: 1em;}
+.comment-content {margin-left: 60px;font-size: 0.8em;color: #222;padding-bottom: 10px;border-bottom: 1px solid #e0e0e0;}
+#imghead{width: 100%;height:auto;}
+</style>
+</head>
+<body>
+	<div class="play-up">
+		<img src="" alt="" id="imghead"  />
+		<div class="fminfo">
+			<div class="fmtitle" id="title"></div>
+			<div class="fmsinger" id="singer"></div>
+		</div>
+	</div>
+	<div id="cont">
+
+		<div id="context"></div>
+
+		<div id="comment">
+
+			<div class="egret-dark-title">最新评论</div>
+<!--<div class="egret-flex-item-logo">
+	<img src="../../image/frame02cover/collectcover.jpg" alt="" class="">
+</div>
+-->
+			<script id="nav2_template" type="text/x-dot-template">
+			{{console.log("privatefm_body-nav2-it.length:"+it.length);}}
+					{{ for(var i=0; i < it.length; i++) { }}
+					<div class="egret-flex-item comment">
+
+					 <div class="egret-flex-item-shelf">
+						 <div class="egret-flex-item-shelf01">{{=it[i].评论人}}</div>
+						 <div class="egret-flex-item-shelf02">{{=it[i].评论时间}}</div>
+					 </div>
+					 <!--
+					 <div class="egret-flex-item-arrow">
+						 <img src="../../image/frame03cover/tool01.png" alt="" class="">
+					 </div>
+					 -->
+					</div>
+					<div class="comment-content">{{=it[i].评论内容}}</div>
+				  {{ } }}
+			</script>
+
+			<div id="nav2_content"></div>
+
+		</div>
+
+		<script id="nav1_template" type="text/x-dot-template">
+				{{ for(var i=0; i < it.length; i++) { }}
+
+			{{ } }}
+		</script>
+		<div id="nav1_content"></div>
+	</div>
+
+
+
+<footer class="aui-bar aui-bar-tab">
+            <div class="aui-bar-tab-item aui-padded-l-15 aui-padded-r-15" tapmode style="width:75%;">
+                <div class="search-input aui-font-size-14" >
+
+                  <textarea  id="comt" placeholder="请输入评论内容" rows="1" maxlength="2000"></textarea>
+								</div>
+            </div>
+            <div class="aui-bar-tab-item" tapmode style="width: 3.0rem;" onclick="comm()">
+                <!--<i class="aui-iconfont aui-icon-comment"></i>-->
+								<input type="button" value="发送" style="background-color:#1C86EE;margin-right:20px;color:#FFFFFF;border-radius: 0.5em;width:50px;"/>
+            </div>
+						<!--
+            <div class="aui-bar-tab-item" tapmode style="width: 2.2rem;">
+                <i class="aui-iconfont aui-icon-star"></i>
+            </div>
+            <div class="aui-bar-tab-item" tapmode style="width: 2.2rem;">
+                <i class="aui-iconfont aui-icon-share"></i>
+            </div>
+					-->
+</footer>
+</body>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/csconfig.js"></script>
+<script type="text/javascript" src="../../script/csapi.js"></script>
+<script type="text/javascript" src="../../script/doT.min.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript">
+
+function playmusic () {
+	var musicdisc = document.getElementsByClassName('playdisc')[0];
+	var musicneedle = document.getElementsByClassName('play_needle')[0];
+
+	musicdisc.style.webkitAnimationPlayState = 'running';
+	musicneedle.style.transform = 'rotate(0deg)';
+	musicneedle.style.webkitTransform = 'rotate(0deg)';
+}
+
+function stopmusic () {
+	var musicdisc = document.getElementsByClassName('playdisc')[0];
+	var musicneedle = document.getElementsByClassName('play_needle')[0];
+
+	musicdisc.style.webkitAnimationPlayState = 'paused';
+	musicneedle.style.transform = 'rotate(-30deg)';
+	musicneedle.style.webkitTransform = 'rotate(-30deg)';
+}
+
+function switchmusic (button) {
+
+	var click = button.getAttribute("data-click");
+
+	if (click == 0) {
+		// 点开
+		button.setAttribute("data-click", 1);
+		button.src = "../../image/musicplay/play_btn_pause.png";
+		// playmusic ();
+	}else {
+		// 关闭
+		button.setAttribute("data-click", 0);
+		button.src = "../../image/musicplay/play_btn_play.png";
+		// stopmusic ();
+	}
+}
+
+window.onload = function  () {
+	//var playbg = document.getElementsByClassName('play-up')[0];
+	//console.log("clientHeight:"+document.documentElement.clientHeight);
+}
+
+apiready = function  () {
+	refreshPage(api.pageParam,'nav1','shownews');
+	refreshPage(api.pageParam,'nav2','showcomm');
+	console.log("privatefm_body-1:"+api.pageParam);
+	//后期还应该有评论和收藏查询
+	//console.log("bt"+api.pageParam.objectvalue.标题+"rq"+api.pageParam.objectvalue.发布日期+"fbr"+api.pageParam.objectvalue.发布人+"nr"+api.pageParam.objectvalue.内容);
+  //$api.text($api.byId('title'),api.pageParam.标题);
+	//$api.text($api.byId('singer'),"发布日期："+api.pageParam.发布日期+"发布人："+api.pageParam.发布人);
+	//$api.html($api.byId('context'),api.pageParam.内容);
+	//$api.css($api.byId('cont'),'margin-bottom:20%');
+
+
+}
+
+function refreshPage(valueParam, paramName,action){
+	$cs.mergeObj(csPageInfo, valueParam);  // 第一行，必须，合并参数
+
+	// 取数据（取关键数据） 替换导航菜单值 ：tab面板
+	$cs.getRmData(action, csPageInfo, paramName, function(ret, err){
+
+		if(action=='shownews'){
+			$api.text($api.byId('title'),ret.data['标题']);
+			$api.text($api.byId('singer'),"发布日期："+ret.data['发布日期']+"发布人："+ret.data['发布人']);
+			$api.html($api.byId('context'),ret.data['内容']);
+			$api.css($api.byId('cont'),'margin-bottom:20%');
+			if(ret.data['fileurl']){
+				$api.attr($api.dom("#imghead"), 'src', ret.data['fileurl']);
+				$api.css($api.dom("#imghead"),'display:block;');
+			}else{
+				//若无图片，图片占据的空间还在，还没有处理掉
+				//$api.attr($api.byId('imghead'),'display','none');
+				//$api.remove($api.dom("#cont img"));
+				$api.css($api.dom("#imghead"),'display:none;');
+			}
+
+		}
+		//console.log("privatefm_body-2:"+ret.data[0]);
+
+
+	});
+  }
+
+	function comm(){
+      var comment=$api.val($api.byId('comt'));
+			//$cs.getRmCmd('showcomm',{"新闻编号":api.pageParam,"comment":comment,"评论":"评论"},function(ret,err){
+		//	});
+		//评论不能为空
+
+		if(""==comment || null==comment){
+			api.toast({
+			    msg: '请输入评论内容',
+			    duration: 2000,
+			    location: 'bottom'
+			});
+			return;
+		}
+		$cs.mergeObj(api.pageParam,{"comment":comment,"评论":"评论"});
+			refreshPage(api.pageParam,'nav2','showcomm');
+		  $api.val($api.byId('comt'),'');
+			//console.log(comment+";");
+
+	}
+</script>
+</html>

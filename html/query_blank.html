@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/csconfig.js"></script>
+    <script type="text/javascript" src="../script/csapi.js"></script>
+    <script type="text/javascript" src="../script/doT.min.js"></script>
+
+    <style>
+        html,body {
+            height: 100%;
+            background-color: transparent !important;
+            overflow: hidden;
+        }
+
+        #wrap {
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+
+            display: -webkit-box;
+            height: 100%;
+        }
+
+        #main {
+            background-color: #eee;
+            /*
+            background-color: #f2f2f2;
+            max-height: 60%; */
+            overflow: auto;
+            -webkit-box-shadow: inset 0px 4px 4px #dddcdc;
+            box-shadow: inset 0px 4px 4px #dddcdc;
+        }
+
+        #main ul li {
+            overflow: hidden;
+            border-bottom: 1px solid #e6e6e6;
+            border-right: 1px solid #e6e6e6;
+            float: left;
+            width: 50%;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        #main ul li a {
+            border-top: 1px solid #fff;
+            color: #999;
+            display: block;
+            padding: 10px 40px;
+        }
+
+        #main ul li a.active {
+            border-top: 1px solid #ccc;
+            background-color: #dee7ea;
+            -webkit-box-shadow: inset 0px 2px 6px #ccc;
+            box-shadow: inset 0px 2px 6px #ccc;
+        }
+
+        #main ul li a em {
+            color: #55abce;
+            float: right;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="wrap">
+        <div id="main">
+            <ul id="query">
+                <li>
+                    <a tapmode="active" onclick="alert('1')">
+                        <span>好的</span><em>序号</em>
+                    </a>
+                </li>
+
+                <li>
+                    <a tapmode="active" onclick="alert('1')">
+                        <span>好的</span><em>序号</em>
+                    </a>
+                </li>
+
+                <li>
+                    <a tapmode="active" onclick="alert('1')">
+                        <span>好的</span><em>序号</em>
+                    </a>
+                </li>
+
+                <li>
+                    <a tapmode="active" onclick="alert('1')">
+                        <span>好的</span><em>序号</em>
+                    </a>
+                </li>
+
+                <li>
+                    <a tapmode="active" onclick="alert('1')">
+                        <span>好的</span><em>序号</em>
+                    </a>
+                </li>
+
+                <li>
+                    <a tapmode="active" onclick="alert('1')">
+                        <span>好的</span><em>序号</em>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // touchend
+        // window.lowAndroidCustomScrolls.push(document.body);
+
+
+
+        apiready = function() {
+            // frameName, 分为科目二，科目三教练
+            // 取列表数据
+            // $api.dom('body')
+            $api.addEvt(document.body, 'touchend', function(e) {
+                console.log("ok");
+                return;
+                var wrap = $api.byId('#wrap');
+                var main = $api.byId('#main');
+
+                if (!$api.contains(main, e.target) || !$api.contains(wrap, e.target)) {
+                    setTimeout(function() {
+                        $cs.closeFrame();
+                    }, 100);
+                }
+            });
+        };
+    </script>
+
+</body>
+
+</html>

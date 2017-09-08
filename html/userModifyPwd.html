@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>用户信息</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="../script/csconfig.js"></script>
+    <script type="text/javascript" src="../script/csapi.js"></script>
+
+</head>
+
+<body>
+
+    <div class="aui-content aui-margin-t-10">
+        <ul class="aui-list aui-form-list">
+            <li class="aui-list-header"></li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-mobile"></i>
+                    </div>
+
+                    <div class="aui-list-item-label">原密码</div>
+                    <div class="aui-list-item-input">
+                        <input type="text" placeholder="请输入原密码" id="currentPwd">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-lock"></i>
+                    </div>
+
+                    <div class="aui-list-item-label">
+                        新密码
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="password" placeholder="请输入新密码" id="newPwd">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-lock"></i>
+                    </div>
+
+                    <div class="aui-list-item-label">
+                        确认新密码
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="password" placeholder="请确认新密码" id="newPwd2">
+                    </div>
+                </div>
+            </li>
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+                    <div class="aui-btn aui-btn-info aui-margin-r-5" tapmode onclick="modifyPwd()">修改密码</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+
+
+<script>
+    function modifyPwd() {
+        var oldPwd = $api.byId('currentPwd').value;
+        var newPwd = $api.byId('newPwd').value;
+        var newPwd2 = $api.byId('newPwd2').value;
+
+        if (newPwd !== newPwd2) {
+            alert('确认密码与新密码不一致');
+            return;
+        }
+
+        if ($cs.isNull(newPwd)) {
+            alert('新密码不能为空');
+            return;
+        }
+
+        if ($cs.isNull(oldPwd)) oldPwd = "";
+
+        var postUrl = $cs.getAppPath() + 'csoft/csmodipwd!mobilemodipwd.action';
+        var bodyParam = {
+            oldpwd: oldPwd,
+            newpwd1: newPwd,
+            newpwd2: newPwd
+        };
+
+        $cs.ajaxReq(postUrl, bodyParam, function(ret, err) {
+          alert("修改成功");
+          $cs.closeWin();
+        })
+    }
+
+    apiready = function() {
+
+    };
+</script>
+
+</html>

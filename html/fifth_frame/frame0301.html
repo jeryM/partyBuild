@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="copyright" content="www.apicloud.com" />
+<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+<title>我的支部</title>
+<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+
+<link rel="stylesheet" type="text/css" href="../../css/idangerous.swiper.css">
+<style>
+html,body {min-height: 100%;background-color: #f9f9f9;}
+.fr {float: right;}
+.fl {float: left;}
+.mt5 {margin-top: 5px;}
+.mt10 {margin-top: 10px;}
+.mt15 {margin-top: 15px;}
+.mt20 {margin-top: 20px;}
+.ml5 {margin-left: 0.5em;}
+.mr5 {margin-right: 0.5em;}
+.hdivider {width: 100%; height: 1px;background-color: #e0e0e0;}
+
+.row {display: -webkit-box;display: -webkit-flex;}
+.col {-webkit-box-flex:1; -webkit-flex:1; flex:1;margin: 0 5px; position: relative;}
+
+
+    .navbar2 {display: -webkit-box; -webkit-box-orient: horizontal; position: relative; height: 40px; box-sizing: border-box; background: #fff; border-bottom: 1px solid #e0e0e0; }
+    .navbar-item {display: block; -webkit-box-flex: 1; width: 100%; line-height: 40px;  font-size: 16px; text-align: center;color: #000; }
+    .navbar-item-hov {background-color: rgba(254,242,228,0.7); }
+    .navbar-item-active {color: #D43C33; }
+    #navmark2 {position: absolute; left: 0px; bottom: 0px; -webkit-transition: 50ms; text-align: center; height: 2px;background-color: #D43C33;}
+
+</style>
+</head>
+<body>
+	  <div id="wrap">
+			<nav class="navbar2" id="fiftheaderIndex">
+					<a id="navbar2-item-recommend" class="navbar-item navbar-item-active" tapmode="navbar-item-hov" onclick="setFrameGroupYxzbIndex(0);">简介</a>
+					<a id="navbar2-item-rank" class="navbar-item" tapmode="navbar-item-hov" onclick="setFrameGroupYxzbIndex(1);">人员列表</a>
+					<a id="navbar2-item-favorite" class="navbar-item" tapmode="navbar-item-hov" onclick="setFrameGroupYxzbIndex(2);">讨论组</a>
+					<!--
+					<a id="navbar2-item-ranklist" class="navbar-item" tapmode="navbar-item-hov" onclick="setFrameGroupIndex(3);">民生服务</a>
+          -->
+					<mark id="navmark2"></mark>
+			</nav>
+	  </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/csconfig.js"></script>
+<script type="text/javascript" src="../../script/csapi.js"></script>
+<script type="text/javascript" src="../../script/doT.min.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript" src="../../script/chat.js"></script>
+
+<script type="text/javascript">
+var fiftheaderIndexHeight;
+var header;
+apiready=function(){
+	header = api.pageParam['firstHeaderOffset'];
+  footer = api.pageParam['footerPos'];
+	var fiftheaderIndex = $api.byId('fiftheaderIndex');
+	fiftheaderIndexHeight = $api.offset(fiftheaderIndex).h;
+	var scrollHeight = $api.dom('.navbar2').offsetHeight;
+	$api.byId('navmark2').style.width = api.winWidth / 3 + 'px';//下划线？
+  openYxzbFramegroup();
+  //
+  rongchat();
+
+
+
+}
+//一线支部-我的支部菜单样式
+function setFrameGroupYxzbStatus(frameIndex) {
+
+    switch (frameIndex) {
+        case 0:
+            {
+                $api.byId('navbar2-item-recommend').className = "navbar-item navbar-item-active";//字体样式改为红色
+                $api.byId('navbar2-item-rank').className      = "navbar-item";
+                $api.byId('navbar2-item-favorite').className  = "navbar-item";
+              //  $api.byId('navbar2-item-ranklist').className  = "navbar-item";
+                var num = (api.winWidth / 3) * frameIndex;//下划线x坐标
+                $api.css($api.byId('navmark2'), "-webkit-transform:translate(" + num + "px,0)");
+
+                break;
+            }
+        case 1:
+            {
+                $api.byId('navbar2-item-recommend').className = "navbar-item";
+                $api.byId('navbar2-item-rank').className      = "navbar-item navbar-item-active";
+                $api.byId('navbar2-item-favorite').className  = "navbar-item";
+                //$api.byId('navbar2-item-ranklist').className  = "navbar-item";
+                var num = (api.winWidth / 3) * frameIndex;
+                $api.css($api.byId('navmark2'), "-webkit-transform:translate(" + num + "px,0)");
+                break;
+            }
+        case 2:
+            {
+                $api.byId('navbar2-item-recommend').className = "navbar-item";
+                $api.byId('navbar2-item-rank').className      = "navbar-item";
+                $api.byId('navbar2-item-favorite').className  = "navbar-item navbar-item-active";
+                //$api.byId('navbar2-item-ranklist').className  = "navbar-item";
+                var num = (api.winWidth / 3) * frameIndex;
+                $api.css($api.byId('navmark2'), "-webkit-transform:translate(" + num + "px,0)");
+                break;
+            }
+        /*case 3:
+            {
+                $api.byId('navbar2-item-recommend').className = "navbar-item";
+                $api.byId('navbar2-item-rank').className      = "navbar-item";
+                $api.byId('navbar2-item-favorite').className  = "navbar-item";
+                //$api.byId('navbar2-item-ranklist').className  = "navbar-item navbar-item-active";
+                var num = (api.winWidth / 3) * frameIndex;
+                $api.css($api.byId('navmark2'), "-webkit-transform:translate(" + num + "px,0)");
+                break;
+            }*/
+
+        default:
+            break;
+    }
+}
+
+// 打开一线支部子菜单框架
+function openYxzbFramegroup() {
+
+    api.openFrameGroup({
+        name: 'framegroup_yxzb',
+        background: '#FFF',
+        scrollEnabled: true,
+        rect: {
+            x: 0,
+            y: header.h + fiftheaderIndexHeight,
+            w: "auto",
+            h: api.frameHeight - footer.h
+            //h: api.frameHeight -  - fiftheaderIndexHeight - footer.h
+        },
+        index: 0,//默认显示的页面索引
+        frames: [{
+            name: 'jianjie',
+            url: './jianjie.html',//简介
+            bounces: false,
+        }, {
+            name: 'peoplelist',
+            url: './peoplelist.html',//人员列表
+            bounces: false,
+        }, {
+            name: 'talks',
+            url: './talks.html',//讨论组
+            bounces: false,
+        }]
+    }, function(ret) {
+        setFrameGroupYxzbStatus(ret.index);//index:当前 frame 索引，改变头部样式
+    });
+}
+//设置一线支部显示二级菜单响应
+function setFrameGroupYxzbIndex(frameIndex) {
+  console.log("frame0301-index:"+frameIndex);
+    api.setFrameGroupIndex({//设置 frame 组当前可见 frame
+        name: 'framegroup_yxzb',
+        index: frameIndex,
+        scroll: true
+    });
+}
+</script>
+</html>

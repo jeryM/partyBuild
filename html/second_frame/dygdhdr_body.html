@@ -1,0 +1,250 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="copyright" content="www.apicloud.com" />
+<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+<title>党员固定活动日_body</title>
+<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+<link rel="stylesheet" type="text/css" href="../../css/aui.2.0.css" />
+<style>
+html,body {min-height: 100%;background-color: #f9f9f9;}
+.fr {float: right;}
+.fl {float: left;}
+.mt5 {margin-top: 5px;}
+.mt10 {margin-top: 10px;}
+.mt15 {margin-top: 15px;}
+.mt20 {margin-top: 20px;}
+.ml5 {margin-left: 0.5em;}
+.mr5 {margin-right: 0.5em;}
+.hdivider {width: 100%; height: 1px;background-color: #e0e0e0;}
+
+.row {display: -webkit-box;display: -webkit-flex;}
+.col {-webkit-box-flex:1; -webkit-flex:1; flex:1;margin: 0 5px; position: relative;}
+
+
+/* 歌单标题 */
+.sectionTitle {height: 2em; line-height: 2em; font-size: 1.12em;}
+.sectionTitle .titleDivider {display: inline-block; height: 1.12em; width: 3px; vertical-align: top; background-color: #D43C33; margin-top: 0.44em; margin-left: 0.7em; margin-right: 0.3em;}
+/* 歌单 */
+.col .listcoverbar {position: absolute; top: 0; background-color: rgba(0,0,0,0.4); width: 100%;height: 1.2em;}
+.col .listcoverbar span {color: #fff;}
+.col .listcoverbar .earphone {width: 1em; margin-top: 0.2em; margin-right: 0.3em;}
+.col .listcover {width: 100%;}
+.col .listtitle {height: 2.4em; font-size: 1em; line-height: 1.2em; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
+
+/* item样式 */
+.egret-item {height: 4em;}
+.egret-item .egret-item-box-cover-center {display: table; height: inherit;}
+.egret-item .egret-item-box-cover-center .egret-item-box-abtc {display: table-cell; vertical-align: middle;}
+.egret-item .egret-item-box-cover-center .egret-item-box-abtc img {width: 3em; vertical-align: top;}
+/* 右侧箭头样式 */
+.egret-item .egret-item-arrow {display: table; height: inherit;}
+.egret-item .egret-item-arrow .egret-item-box-abtc {display: table-cell; vertical-align: middle;}
+.egret-item .egret-item-arrow .egret-item-box-abtc img {width: 0.8em; vertical-align: top;}
+/* 中间shelf  两个条目*/
+.egret-item .egret-item-shelf {height: inherit; }
+.egret-item .egret-item-shelf .egret-item-shelf-title {font-size: 1.1em; margin-top: 0.6em;}
+.egret-item .egret-item-shelf .egret-item-shelf-subtitle {font-size: 0.6em; color: #666; margin-top: 0.6em;}
+/* 中间shelf 一个条目 */
+.egret-item .egret-item-shelf-single {height: inherit; line-height: 4em;font-size: 1.1em;}
+.egret-item .egret-item-shelf-redclassify {color: #E03F40; border:1px solid #E03F40; font-size: inherit;padding: 0.1em;border-radius: 1px;margin-right: 5px;}
+
+
+/* 用flex重写框架 */
+.egret-flex-item {display: -webkit-box;-webkit-box-align:center;height: 3em;}
+/* 左部logo */
+.egret-flex-item-logo {max-width: 50px; min-width: 50px; margin-left: 0.5em; margin-right: 0.2em;-webkit-box-flex: 1; -webkit-box-align: center;}
+.egret-flex-item-logo img {height: 2em; width: 2em; -webkit-box-align: center;vertical-align: top;/*否则图片不会居中，底部仍然是会有空白*/}
+/* 中间文本信息 */
+.egret-flex-item-shelf {overflow: hidden; -webkit-box-flex:2; -webkit-box-align: center;}
+.egret-flex-item-shelf div {text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
+.egret-flex-item-shelf .egret-flex-item-shelf01 {font-size: 1.1em;}
+.egret-flex-item-shelf .egret-flex-item-shelf02 {font-size: 0.6em; color: #666; margin-top: 0.6em;}
+.egret-flex-item-shelf .egret-flex-item-redclassify {color: #E03F40; border: 1px solid #E03F40; font-size: inherit; padding: 0.1em; border-radius: 1px; margin-right: 5px;}
+
+/* 右部箭头 */
+.egret-flex-item-arrow {-webkit-box-flex: 1;max-width: 10px; min-width: 10px; margin-right: 15px;}
+.egret-flex-item-arrow img {width: 100%; max-width: 10px;}
+
+/* 暗头部 */
+.egret-dark-title {height: 1.4em; line-height: 1.4em; font-size: 0.8em; background-color: #e7e7e7; color: #666; padding-left: 10px;}
+
+/* special 对个别自定义 */
+.special {height: 4em;}
+.special .egret-flex-item-logo img  {height: 3em;width: 3em;}
+
+/* */
+.inputmusic {text-align: center;margin-top: 30px;}
+.inputmusic p {color: #6F6F6F;}
+.inputmusic p .inputbtn {color: #3A9DD3;text-decoration: underline;}
+
+div .scan-img{width: 100%;text-align:center;}
+img {display: none; }
+</style>
+</head>
+<body>
+  <div class="scan-img">
+   <img src="" id="ewm"/>
+  </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/csapi.js"></script>
+<script type="text/javascript" src="../../script/csconfig.js"></script>
+<script type="text/javascript">
+var params = {};
+//党员固定活动日
+function opengdhdr(){
+  api.openWin({
+		name: 'dygdhdr',
+		url: './dygdhdr.html',
+		delay:200
+	});
+
+}
+
+function refreshPage(valueParam, paramName,action){
+	$cs.mergeObj(csPageInfo, valueParam);  // 第一行，必须，合并参数
+
+	// 取数据（取关键数据） 替换导航菜单值 ：tab面板
+	$cs.getRmData(action, csPageInfo, paramName, function(ret, err){
+	/*	$api.text($api.byId("msg_count1"), ret.data2['count1']);
+    */
+	});
+}
+//获得二维码
+function getewm(action,valueParam){
+  $cs.mergeObj(csPageInfo, valueParam);
+  $cs.getRmCmd(action,csPageInfo,function(ret){
+    if(ret.data !=null){
+      console.log("二维码链接:"+ret.data);
+      $api.attr($api.byId('ewm'),'src' ,ret.data);
+      $api.css($api.byId('ewm'),'display:inline-block;');
+    }
+
+  });
+}
+
+
+function refresh(){
+  $cs.setRefreshHeaderInfo(function (ret, err) {
+        //csPageInfo.csPageStart = 1;            // 第一页
+        //refreshPage();                         // 页面固定函数
+        //getlocaltion();
+        //getlocal();
+        getlocalBmap();
+        setTimeout(function(){
+          //console.log("params:"+params.lon);
+          console.log("apiready:"+JSON.stringify(params));
+          getewm('dygdhdr',params);
+        },1000);
+    });
+}
+
+
+
+//百度定位
+function getlocalBmap(){
+    var bMap = api.require('bMap');
+    bMap.getLocationServices(function(ret, err) {
+      if (ret.enable) {
+          //alert(JSON.stringify(ret));
+          //获取定位
+          bMap.getLocation({
+            accuracy: '10m',
+            autoStop:false,
+            filter: 1
+          }, function(ret, err) {
+              if (ret.status) {//定位成功
+                  console.log("定位成功："+"lo:"+ret.lon+",la:"+ret.lat+",time:"+ret.timestamp+",type:"+ret.locationType);
+                  //alert(JSON.stringify(ret));
+                  params = {'lon':ret.lon,'lat':ret.lat};
+                  bMap.stopLocation();//关闭定位服务,autoStop:false时启用，否则注释掉,
+                  //定位地点名称
+                  bMap.getNameFromCoords({
+                        lon: ret.lon,
+                        lat: ret.lat
+                  }, function(ret, err) {
+                        if (ret.status) {
+                            //alert(JSON.stringify(ret));
+                            console.log("地点："+ret.address);
+                            params['地点']=ret['address'];
+                            params['deviceId']=api.deviceId;
+                            params['deviceName']=api.deviceName;
+                            console.log("json:"+JSON.stringify(params));
+                          //  return params;
+                        }
+                  });//getNameFromCoords end
+              } else {
+                  alert("定位失败");
+                  return;
+              }
+
+          });
+          //bMap.stopLocation();//关闭定位服务
+      } else {
+          alert("未开启定位功能");
+          return;
+      }
+   });
+}//getlocalBmap end
+
+apiready = function  () {
+  //getlocaltion();
+  //getlocal();
+  getlocalBmap.call(params);
+  setTimeout(function(){
+    //console.log("params:"+params.lon);
+    console.log("apiready:"+JSON.stringify(params));
+    getewm('dygdhdr',params);
+  },600);
+  refresh();
+}
+
+//获得定位
+function getlocation(){
+    api.startLocation({
+      accuracy: '10m',
+      filter: 1,
+      autoStop: false
+    }, function(ret, err){
+      if(ret && ret.status){
+           //获取位置信息成功
+           alert("lo:"+ret.longitude+",la:"+ret.latitude+",time:"+ret.timestamp);
+           console.log("lo:"+ret.longitude+",la:"+ret.latitude+",time:"+ret.timestamp);
+      }else{
+           alert(JSON.stringify(err));
+           console.log("失败");
+      }
+  });
+  api.stopLocation();
+
+/*  api.getLocation(function(ret, err) {
+  if (ret && ret.status) {
+    console.log("lo:"+ret.longitude+",la:"+ret.latitude+",time:"+ret.timestamp);
+  } else {
+      alert(JSON.stringify(err));
+  }
+});*/
+
+} //getlocation end
+
+//获取定位信息
+function getlocal(){
+  var baiduLocation = api.require('baiduLocation');
+  baiduLocation.startLocation({
+       accuracy: '10m',
+       filter: 1,
+       autoStop: true
+  }, function(ret, err) {
+       if (ret.status) {
+           alert(JSON.stringify(ret));
+           console.log("lo:"+ret.longitude+",la:"+ret.latitude+",time:"+ret.timestamp);
+       } else {
+           alert(JSON.stringify(err));
+       }
+  });
+}//getlocal  end
+
+</script>
+</html>

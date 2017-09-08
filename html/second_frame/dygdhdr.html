@@ -1,0 +1,232 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="copyright" content="www.apicloud.com" />
+<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+<title>党员固定活动日</title>
+<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+<style>
+html,body {min-height: 100%;background-color: #f9f9f9;}
+.fr {float: right;}
+.fl {float: left;}
+.mt5 {margin-top: 5px;}
+.mt10 {margin-top: 10px;}
+.mt15 {margin-top: 15px;}
+.mt20 {margin-top: 20px;}
+.ml5 {margin-left: 0.5em;}
+.mr5 {margin-right: 0.5em;}
+.hdivider {width: 100%; height: 1px;background-color: #e0e0e0;}
+.br {border-right: 1px solid #e0e0e0;}
+.toRight {right: 0;}
+img {vertical-align: top;}
+
+.row {display: -webkit-box;display: -webkit-flex;}
+.col {-webkit-box-flex:1; -webkit-flex:1; flex:1;margin: 0 5px; position: relative;}
+
+/* 第二头部 */
+.egret-img {position:absolute;z-index: 2;width: 100%;}
+.egret-img img {height: 30px;padding: 10px 20px;float:right;}
+.egret-header-text {line-height: 50px;color: #fff;font-size: 16px;padding: 0 10px;}
+.egret-header-title {position:absolute;z-index: 1;width: 100%;text-align: center;line-height: 50px;color: #fff;font-size: 20px;}
+
+/* 头部 */
+.topbar {background: #D43C33; height:50px; border-bottom: 1px solid #DDDFE3;position: relative;}
+.titlebar {display: none;}
+.activebar {display: block;}
+
+</style>
+</head>
+<body>
+  <!-- 第二头部 -->
+  <div id="secHeader" class="activebar">
+      <div class="egret-header topbar">
+          <div class="egret-header-title">党员固定活动日</div>
+          <div class="egret-img" ><img src="../../image/scan.jpg"  onclick="scanimg()"/></div>
+      </div>
+  </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/csapi.js"></script>
+<script type="text/javascript" src="../../script/csconfig.js"></script>
+<script type="text/javascript">
+var header;
+var headerPos;
+var params = {};
+
+function goback () {
+	api.closeWin({name:'rescentplay'});
+}
+
+apiready = function (){
+	  header = $api.byId('secHeader');
+    $api.fixStatusBar(header);
+
+    headerPos = $api.offset(header);
+
+    var frameindex = 0;
+
+	  api.openFrame({
+		name: 'dygdhdr_body',
+		url: './dygdhdr_body.html',
+		bounces: false,
+		opaque: false,
+		rect: {
+			x: 0,
+			y: headerPos.h,
+			w: 'auto',
+			h: 'auto'
+		}
+
+	});
+
+}
+
+function scanimg(){
+  var FNScanner = api.require('FNScanner');
+  FNScanner.openScanner({
+      autorotation: true
+  }, function(ret, err) {
+    console.log("scanimg-ret:"+JSON.stringify(ret));
+    //console.log("scanimg-err:"+JSON.stringify(err));
+      if (ret.eventType=='success'){
+            var str =ret.content;
+            console.log("str:"+str);
+            //alert(str);
+            //str='{"uid":"1","uname":"3"}';
+            var js=$api.strToJson(str);//json转换
+            //console.log("strToJson:"+js.uid);
+            //alert("strToJson:"+$api.strToJson(js.uid));
+            getlocalBmap(js.hlon,js.hlat);
+            setTimeout(function(){
+              $cs.mergeObj(js,params);
+              var action = 'qd';
+              //console.log("action:"+action);
+              gqd(action,js);
+              console.log("...");
+
+            },1000);
+      } else {
+        //  console.log(JSON.stringify(err));
+      }
+  });
+}
+
+//定位
+function getlocalBmap(hlon,hlat){
+    var bMap = api.require('bMap');
+    bMap.getLocationServices(function(ret, err) {
+      if (ret.enable) {
+          //alert(JSON.stringify(ret));
+          //获取定位
+          bMap.getLocation({
+            accuracy: '10m',
+            autoStop:false,
+            filter: 1
+          }, function(ret, err) {
+              if (ret.status) {//定位成功
+                  console.log("定位成功："+"lo:"+ret.lon+",la:"+ret.lat+",time:"+ret.timestamp+",type:"+ret.locationType);
+                  //alert(JSON.stringify(ret));
+                  params = {'lon':ret.lon,'lat':ret.lat};
+                  bMap.getDistance({
+                      start: {
+                          lon: hlon,//传入值
+                          lat: hlat
+                      },
+                      end: {
+                          lon: ret.lon,
+                          lat: ret.lat
+                      }
+                  }, function(ret) {
+                      if (ret.status) {
+                          console.log("距离："+ret['distance']);
+                          params['distance']=ret['distance'];
+                          bMap.stopLocation();//关闭定位服务,autoStop:false时启用，否则注释掉,
+                          //alert("距离："+ret.distance);
+                          a = true;
+                      }
+                  });//end getDistance
+                  //定位地点名称
+                  bMap.getNameFromCoords({
+                        lon: ret.lon,
+                        lat: ret.lat
+                  }, function(ret, err) {
+                        if (ret.status) {
+                            //alert(JSON.stringify(ret));
+                            console.log("地点："+ret.address);
+                            params['地点']=ret['address'];
+                            params['deviceId']=api.deviceId;
+                            params['deviceName']=api.deviceName;
+                            console.log("json:"+JSON.stringify(params));
+                          //  return params;
+                        }
+                  });//getNameFromCoords end
+                  /*setTimeout(function(){
+                    console.log("return:"+JSON.stringify(params));
+                    eturn params;
+                  },800);
+                  */
+              } else {
+                  //alert("定位失败："+err.code);
+                  return;
+              }
+
+          });
+          //bMap.stopLocation();//关闭定位服务
+      } else {
+          alert("未开启定位功能！");
+          return;
+      }
+   });
+}//getlocalBmap end
+
+//ajaxReq
+function qd(action,valueParam){
+  console.log("qd-params:"+valueParam);
+  $cs.mergeObj(csPageInfo, valueParam);
+  $cs.ajaxReq(action,valueParam,function(ret,err){
+
+     console.log("qd:"+JSON.stringify(ret));
+     if(ret.data=='success'){
+       console.log("签到成功");
+     }
+     if(ret.data=='had'){
+       console.log("已签到");
+     }
+  },function(ret,err){
+     //console.log("err:"+JSON.stringify(err));
+     //alert(err.body);
+  });
+}
+//getRmCmd
+function gqd(action,valueParam){
+  console.log("gqd-params:"+JSON.stringify(valueParam));
+  $cs.mergeObj(csPageInfo, valueParam);
+  $cs.getRmCmd(action,valueParam,function(ret,err){
+
+     console.log("gqd:"+JSON.stringify(ret));
+     if(ret.data=='success'){
+       console.log("签到成功");
+       $api.toast('', '签到成功',  2000);
+
+     }
+     if(ret.data=='had'){
+       console.log("已签到");
+        $api.toast('', '已签到',  2000);
+     }
+     if(ret.data=='fail'){
+       console.log("签到失败");
+        $api.toast('', '签到失败',  2000);
+     }
+     if(ret.data=='faraway'){
+       console.log("距离太远");
+       $api.toast('', '距离太远', 2000);
+
+     }
+  },function(ret,err){
+     //console.log("err:"+JSON.stringify(err));
+     alert("签到异常！");
+  });
+}
+</script>
+</html>

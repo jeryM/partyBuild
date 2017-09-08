@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>党员注册</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.2.0.css" />
+    <style>
+        .return-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <span class="aui-margin-t-10"></span>
+    <header class="aui-margin-t-15 aui-margin-b-10 aui-text-center">
+        <div class="aui-pull-left aui-btn return-left" onclick="closeWin()">
+            <span class="aui-iconfont aui-icon-left aui-text-primary"></span>返回
+        </div>
+        <div class="aui-title ">党员注册</div>
+    </header>
+
+    <ul class="aui-list aui-form-list">
+
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    注册类型
+                </div>
+                <div class="aui-list-item-input">
+                    <label><input class="aui-radio" type="radio" name="regtype" value="党员" checked> 党员</label>
+                    <label><input class="aui-radio" type="radio" name="regtype" value="游客">游客</label>
+                </div>
+            </div>
+        </li>
+
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    手机号
+                </div>
+                <div class="aui-list-item-input">
+                    <input type="number" name="phone" placeholder="请输入你的手机号码" />
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    密码
+                </div>
+                <div class="aui-list-item-input">
+                    <input type="password" name="password" placeholder="设置密码" />
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    确认密码
+                </div>
+                <div class="aui-list-item-input">
+                    <input type="password" name="password2" placeholder="确认密码" />
+                </div>
+            </div>
+        </li>
+
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    姓名
+                </div>
+                <div class="aui-list-item-input">
+                    <input type="text" name="username" placeholder="姓名" />
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    性别
+                </div>
+                <div class="aui-list-item-input">
+                    <label><input class="aui-radio" type="radio" name="sex" value="男" checked> 男</label>
+                    <label><input class="aui-radio" type="radio" name="sex" value="女"> 女</label>
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    学历
+                </div>
+                <div class="aui-list-item-input">
+                    <select name="eduback">
+                            <option disabled selected>请选择</option>
+                            <option value="博士">博士</option>
+                            <option value="硕士">硕士</option>
+                            <option value="本科">本科</option>
+                            <option value="专科">专科</option>
+                            <option value="高中">高中</option>
+                            <option value="初中">初中</option>
+                            <option value="小学">小学</option>
+                        </select>
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    出生日期
+                </div>
+                <div class="aui-list-item-input">
+                    <input type="date" placeholder="出生日期" name="birthday" style="padding: 0.5rem 0;">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    入党日期
+                </div>
+                <div class="aui-list-item-input">
+                    <input type="date" placeholder="入党日期" name="comePatydate" style="padding: 0.5rem 0;">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    所在支部
+                </div>
+                <div class="aui-list-item-input">
+                    <select name="myPaty" id="nav1_content" onchange="getname(this.value)">
+                      <option disabled selected>请选择</option>
+                      <script id="nav1_template" type="text/x-dot-template">
+                          <option disabled selected>请选择</option>
+                          {{ for(var i=0; i < it.length; i++) { }}
+                          <option value="{{=it[i].codeid}}" id="{{=it[i].codeid}}">{{=it[i].codename}}</option>
+                          {{ } }}
+                      </script>
+                      </select>
+                </div>
+            </div>
+        </li>
+
+
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+                <div class="aui-btn aui-btn-info aui-margin-r-5" onclick="commit()">提交</div>
+                <div class="aui-btn aui-btn-danger aui-margin-l-5" onclick="cancel()">取消</div>
+            </div>
+        </li>
+    </ul>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/csconfig.js"></script>
+<script type="text/javascript" src="../script/csapi.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script>
+
+
+    function closeWin() {
+        api.closeWin();
+
+    }
+
+    function cancel(){
+      $api.val($api.dom('input[name="password"]'),"");
+      $api.val($api.dom('input[name="password2"]'),"");
+    }
+
+   var name;
+   function getname(idvalue){
+     console.log("name:"+name);
+     name = $api.text($api.byId(idvalue));
+   }
+
+    function commit() {
+        console.log(
+            "注册类型:" + $api.val($api.dom('input[name="regtype"]:checked')) +
+           ";手机号码:" + $api.val($api.dom('input[name="phone"]'))+
+             ";密码:" + $api.val($api.dom('input[name="password"]')) +
+            ";确认密码:" + $api.val($api.dom('input[name="password2"]'))+
+            ";姓名:" + $api.val($api.dom('input[name="username"]')) +
+            ";性别:" + $api.val($api.dom('input[name="sex"]:checked'))+
+            ";学历:" + $api.val($api.dom('select[name="eduback"]'))+
+            ";出生日期:" + $api.val($api.dom('input[name="birthday"]'))+
+            ";入党日期:" + $api.val($api.dom('input[name="comePatydate"]'))+
+            "支部编号:"+$api.val($api.dom('select[name="myPaty"]'))+
+            "支部编号-checked:"+$api.val($api.dom('select[name="myPaty"]:checked'))+
+            ";所在支部:" + name
+        );
+
+        valuesParam = {
+              "注册类型":$api.val($api.dom('input[name="regtype"]:checked')) ,
+              "手机号码":$api.val($api.dom('input[name="phone"]')) ,
+              "密码":$api.val($api.dom('input[name="password"]')) ,
+              "确认密码":$api.val($api.dom('input[name="password2"]')) ,
+              "姓名":$api.val($api.dom('input[name="username"]')) ,
+              "性别":$api.val($api.dom('input[name="sex"]:checked')) ,
+              "学历":$api.val($api.dom('select[name="eduback"]')) ,
+              "出生日期":$api.val($api.dom('input[name="birthday"]')) ,
+              "入党日期":$api.val($api.dom('input[name="comePatydate"]')) ,
+              "支部编号":$api.val($api.dom('select[name="myPaty"]')),
+              "所在支部":name
+        };
+        console.log("tosting:"+JSON.stringify(valuesParam));
+        var reg = /^\d+$/;
+        var mobile = /(^0?[1][3578][0-9]{9}$)/;
+        if (!mobile.test(valuesParam.手机号码) || valuesParam.手机号码.length != 11 ) {
+            api.toast({
+                msg: '请正确输入11位手机号',
+                duration: 1000,
+                location: 'middle',
+            });
+            return;
+        }
+
+        var testpassword1 =/^(\d|[a-zA-Z]|[!@#$%^&*]){6,8}$/ ;
+        var testpassword2 =/^([a-zA-Z]+\d+)$/ ;
+        var testpassword3 =/^[a-zA-Z0-9]{5,}$/ ;
+        console.log("test:"+!testpassword3.test(valuesParam.密码));
+        //console.log(",空对象:"+valuesParam.密码==null);
+        //console.log("空char::"+valuesParam.密码=='');
+        if ( !testpassword3.test(valuesParam.密码) ) {
+            api.toast({
+                msg: '请输入至少6位密码',
+                duration: 1000,
+                location: 'middle',
+            });
+            return;
+        }
+        if (valuesParam.确认密码 != valuesParam.密码 ) {
+            api.toast({
+                msg: '确认密码不一致',
+                duration: 1000,
+                location: 'middle',
+            });
+            return;
+        }
+        if (valuesParam.姓名 == "") {
+            api.toast({
+                msg: '请输入姓名',
+                duration: 1000,
+                location: 'middle',
+            });
+            return;
+        }
+        if (valuesParam.学历 == "请选择") {
+            api.toast({
+                msg: '请选择学历',
+                duration: 1000,
+                location: 'middle',
+            });
+            return;
+        }
+        if (valuesParam.支部编号 == "请选择") {
+            api.toast({
+                msg: '请选择支部',
+                duration: 1000,
+                location: 'middle',
+            });
+            return;
+        }
+        $cs.getRmCmd('reguser', valuesParam, function(ret, err) {
+            if (ret.success)
+                console.log("提交成功");
+            //alert("提交成功");
+            api.toast({
+                msg: '提交成功',
+                duration: 1000,
+                location: 'middle',
+            });
+        }, function(ret, err) {
+            if (!ret.success)
+            //提交失败提示
+                console.log("err:" + ret.msg);
+            api.toast({
+                msg: '提交失败',
+                duration: 1000,
+                location: 'middle',
+            });
+        });
+    }
+    function refreshPage(valueParam, paramName,action){
+    	$cs.mergeObj(csPageInfo, valueParam);  // 第一行，必须，合并参数
+
+    	// 取数据（取关键数据） 替换导航菜单值 ：tab面板
+    	$cs.getRmData(action, csPageInfo, paramName, function(ret, err){
+    	/*	$api.text($api.byId("msg_count1"), ret.data2['count1']);
+    	*/
+      //$api.val($api.dom('input[name="phone"]'), ret.data.联系方式);
+      console.log("data.length:"+JSON.stringify(ret.data));
+    /*  var jsa = ret.data;
+      for(int i=0;i<ret.data.size();i++){
+           console.log("组织编号"+jsa[i].组织编号+",组织名称："+jsa[i].组织名称);
+      }*/
+
+    	});
+    }
+    apiready = function(){
+      refreshPage({},'nav1','getpaty');
+
+    }
+</script>
+
+</html>
